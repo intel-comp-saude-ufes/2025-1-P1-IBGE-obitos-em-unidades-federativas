@@ -95,7 +95,7 @@ def process_data_frame(df):
 def process_all_years(path='./', prefix_to_save = 'result'):
 
   folders = ['1-uteis', '2-uteis','3-uteis', '4-uteis', '5-uteis', '5-uteis-parte-1']
-  years = list(map(lambda x : str(x), [2022]))
+  years = list(map(lambda x : str(x), [2023]))
   
   ## ignorar arquivos já processados
   file_filter = lambda _file : ('done' not in _file) and ('Tabela' in _file)
