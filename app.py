@@ -53,20 +53,24 @@ def remove_death_related_columns(data : pd.DataFrame, inplace = False)  :
 
 if __name__ == '__main__':
 
-  process_all_years('./data')
+  
+  if True:
+    years = list(map(lambda x : str(x), range(2019, 2023 + 1)))
+    process_all_years(years, path='data/')
 
 
   if False:
       
-    df = read_processed_data_frame('all_2022.csv')
+    df = read_processed_data_frame('result_2022 - done.csv')
+    print(df)
 
-    data = remove_brasil_row_and_bug_column(df)
-    data = remove_column(data, 'Grandes Regiões')
-    data = remove_death_related_columns(data, inplace=True)
+   # data = remove_brasil_row_and_bug_column(df)
+    #data = remove_column(data, 'Grandes Regiões')
+#   data = remove_death_related_columns(data, inplace=True)
     
-    feature_columns = data.columns
-    X_scaled = apply_robust_scaling(data)
-    pca_analysis(X_scaled, feature_columns, verbose=True)
+    #feature_columns = data.columns
+    #X_scaled = apply_robust_scaling(data)
+    #pca_analysis(X_scaled, feature_columns, verbose=True)
   
   #pca_analysis_by_age_ranges(df)
   

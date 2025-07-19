@@ -92,25 +92,26 @@ def process_data_frame(df):
   return df
 
 
-def process_all_years(path='./', prefix_to_save = 'result'):
-
-  folders = ['1-uteis', '2-uteis','3-uteis', '4-uteis', '5-uteis', '5-uteis-parte-1']
-  years = list(map(lambda x : str(x), [2023]))
+def process_all_years(years_list : list[str], path='./', prefix_to_save = 'result', remove_brasil = True):
+  
+  
+  folders = get_dir_content(root=path)[0]
+  #folders = ['1-uteis', '2-uteis','3-uteis', '4-uteis', '5-uteis', '5-uteis-parte-1']
+  
   
   ## ignorar arquivos já processados
   file_filter = lambda _file : ('done' not in _file) and ('Tabela' in _file)
 
-  grades_regioes_str = 'Grandes Regiões'
+  grandes_regioes_str = 'Grandes Regiões'
   done_df_list = []
 
-  for y_str in years:
+  for y_str in years_list:
 
       df_list = []
       test_list = []
 
       for folder in folders:
-
-        content = get_dir_content(os.path.join(path, folder))
+        content = get_dir_content(folder)
         files = sorted(content[1])
         
         file_tqdm = tqdm(files)
@@ -130,17 +131,22 @@ def process_all_years(path='./', prefix_to_save = 'result'):
 
             ## colocando nome da tabela na coluna
             df.columns = [f'{base_name}_{_c}' for _c in list(df.columns) ]
-            df.columns = list(map(lambda x : grades_regioes_str if grades_regioes_str in x else x, list(df.columns)))
+            df.columns = list(map(lambda x : grandes_regioes_str if grandes_regioes_str in x else x, list(df.columns)))
 
             ## caso não tenha a 'sheet' do ano, tem uma coluna daquele ano
             if status == 'err':
-                year_columns = [_c for _c in df.columns if y_str in _c] + [grades_regioes_str]
+                year_columns = [_c for _c in df.columns if y_str in _c] + [grandes_regioes_str]
                 df = df[year_columns]
                 
             df_list.append(df)
           
-      df_final = reduce(lambda left, right: pd.merge(left, right, on= grades_regioes_str), df_list)
+      df_final = reduce(lambda left, right: pd.merge(left, right, on= grandes_regioes_str), df_list)
       df_save_name = f'{prefix_to_save}_{y_str} - done.csv'
+      
+      if remove_brasil:
+        brasil_mask = df_final[grandes_regioes_str] == 'Brasil'
+        df_final = df_final[~brasil_mask] ## removing brasil
+      
       print(f'{COLOR_BLUE}[INFO]{COLOR_RESET} Saving the table `{df_save_name}`')
       df_final.to_csv(df_save_name, index=False)
       done_df_list.append(df_final)
