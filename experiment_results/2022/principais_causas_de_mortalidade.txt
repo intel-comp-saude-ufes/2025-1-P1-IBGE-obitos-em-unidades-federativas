@@ -1,0 +1,4 @@
+Tabela 5.2 (Obitos_Geo)_Número de óbitos_Causas selecionadas_Infecção por coronavírus de localização não especificada_Grupos de idade_60 anos ou mais
+Tabela 5.2 (Obitos_Geo)_Número de óbitos_Causas selecionadas_Infecção por coronavírus de localização não especificada_Grupos de idade_70 anos ou mais
+Tabela 5.2 (Obitos_Geo)_Número de óbitos_Causas selecionadas_Influenza [gripe] e pneumonia_Grupos de idade_0 a 14 anos
+Tabela 5.2 (Obitos_Geo)_Número de óbitos_Causas selecionadas_Influenza [gripe] e pneumonia_Grupos de idade_15 a 29 anos
