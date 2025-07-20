@@ -47,6 +47,8 @@ def _run_experiment(datasets_path='./', year_of_dataset='2022'):
         dataset2 = dataset.copy()
         dataset = dataset.loc[:, [c for c in dataset.columns if '5.2 ' in c]].copy()
         dataset2 = dataset2.loc[:, list(set(dataset2.columns) - set(dataset.columns))].copy()
+        dataset = dataset[sorted(dataset.columns)]
+        dataset2 = dataset2[sorted(dataset2.columns)]
     except Exception as e:
         traceback.print_exc()
         exit(1)
@@ -70,7 +72,8 @@ def _run_experiment(datasets_path='./', year_of_dataset='2022'):
         X=dataset_scaled,
         labels=aff_model.labels_,
         exemplars=aff_model.cluster_centers_indices_,
-        index_labels=dataset.index
+        index_labels=dataset.index,
+        year_of_dataset=year_of_dataset
     ) 
 
 
