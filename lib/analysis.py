@@ -148,3 +148,5 @@ def pca_analysis(data : np.array, feature_names, verbose = False, threshold = 0.
 def apply_robust_scaling(data : pd.DataFrame) -> np.array:
     data_p = (RobustScaler()).fit_transform(data)
     return data_p
+
+
