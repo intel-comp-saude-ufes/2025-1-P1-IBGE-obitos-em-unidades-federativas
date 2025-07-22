@@ -101,7 +101,7 @@ A seguir, apresentamos as instruções recomendadas para reproduzir os experimen
 # Contato
 | Autor                 | GitHub               | E-mail               |
 | :---------------- | :------: | ----: |
-| Pedro Igor Gomes de Morais | [@Pedro2um](https://github.com/Pedro2um) | email-pessoal |
-| Matheus Saick De Martin | [@saick123](https://github.com/saick123) | email-pessoal |
+| Pedro Igor Gomes de Morais | [@Pedro2um](https://github.com/Pedro2um) | email-pessoal ❗ **Atenção:** |
+| Matheus Saick De Martin | [@saick123](https://github.com/saick123) | email-pessoal ❗ **Atenção:** |
 | Renzo Henrique Guzzo Leão | [@Renzo-Henrique](https://github.com/seuusuario) | renzolealguzzo@gmail.com |
 
