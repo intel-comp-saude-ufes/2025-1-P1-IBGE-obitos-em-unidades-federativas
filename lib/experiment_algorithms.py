@@ -94,6 +94,39 @@ def plot_silhouette_scores(X_scaled, range_k=range(2, 8), year_of_dataset='2022'
     plt.savefig(os.path.join(RESULTS + year_of_dataset, 'silhouette_scores.pdf'), format='pdf')
     plt.close()
 
+def plot_boxplots(df, year_of_dataset='2022'):
+    """
+    Gera e salva boxplots individuais para cada coluna do DataFrame.
+    """
+   
+    for i  in range(len(df.columns)):
+        col = df.columns[i]
+        data = df.iloc[:, i]
+    
+        plt.figure()
+        plt.boxplot(data)
+        plt.title(f'Boxplot - {col}')
+        plt.ylabel(col)
+
+        
+        safe_label = col.replace("/", "_")
+
+        # Garante nome único para o arquivo
+        i = 0
+        while True:
+            if i == 0:
+                filename = f'{safe_label}_boxplot.pdf'
+            else:
+                filename = f'{safe_label}_boxplot_{i}.pdf'
+            full_path = os.path.join(RESULTS + '/' + year_of_dataset + '/', filename)
+            if not os.path.exists(full_path):
+                break
+            i += 1
+
+        plt.savefig(full_path, format='pdf')
+        plt.close()
+
+
 def plot_clusters_pca(X_scaled, df_clusters, estado_index, metodo='AffinityPropagation', feature_names=None, year_of_dataset='2022'):
     """
     Visualiza os clusters via PCA 2D, imprime a variância explicada,

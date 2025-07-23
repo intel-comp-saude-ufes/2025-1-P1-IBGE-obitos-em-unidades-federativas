@@ -14,7 +14,7 @@ from pathlib import Path
 
 from lib.analysis import pca_analysis
 from lib.data_processing import process_all_years
-from lib.experiment_algorithms import RESULTS, plot_affinity_graph, plot_bar_sorted, plot_clusters_pca, plot_heatmap_outliers, plot_linkage, plot_silhouette_scores, regression
+from lib.experiment_algorithms import RESULTS, plot_affinity_graph, plot_bar_sorted, plot_boxplots, plot_clusters_pca, plot_heatmap_outliers, plot_linkage, plot_silhouette_scores, regression
 
 
 
@@ -137,8 +137,13 @@ def _run_experiment(datasets_path='./', year_of_dataset='2022'):
     subset_dataset = dataset.loc[:, cols].copy()
 
 
+    
+
+
     df_prop = subset_dataset
     df_prop.columns = df_prop.columns.str.extract(r'Grupos de idade_(.+)$')[0]
+
+    plot_boxplots(df_prop, year_of_dataset)
 
     plot_heatmap_outliers(df=subset_dataset, year_of_dataset=year_of_dataset) # outliers em relação ao estado
 
