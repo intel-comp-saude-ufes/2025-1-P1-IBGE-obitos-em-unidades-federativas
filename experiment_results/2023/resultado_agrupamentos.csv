@@ -1,0 +1,28 @@
+Estado,KMeans,AffinityPropagation,Agglomerative
+Acre,1,2,0
+Alagoas,3,4,4
+Amapá,2,0,2
+Amazonas,0,0,2
+Bahia,1,2,0
+Ceará,1,2,0
+Distrito Federal,4,1,3
+Espírito Santo,1,2,0
+Goiás,1,2,0
+Maranhão,4,3,1
+Mato Grosso,0,2,0
+Mato Grosso do Sul,3,4,2
+Minas Gerais,1,2,0
+Paraná,0,2,0
+Paraíba,1,2,0
+Pará,1,2,0
+Pernambuco,3,4,2
+Piauí,4,3,1
+Rio Grande do Norte,1,2,0
+Rio Grande do Sul,0,2,0
+Rio de Janeiro,3,4,2
+Rondônia,0,0,2
+Roraima,0,0,2
+Santa Catarina,1,2,0
+Sergipe,1,2,0
+São Paulo,0,2,0
+Tocantins,4,3,1

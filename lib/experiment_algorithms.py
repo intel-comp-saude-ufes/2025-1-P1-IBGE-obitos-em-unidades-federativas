@@ -18,7 +18,6 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.cluster.hierarchy import linkage, dendrogram
-from pathlib import Path
 
 RESULTS='experiment_results/'
 
@@ -122,11 +121,6 @@ def plot_clusters_pca(X_scaled, df_clusters, estado_index, metodo='AffinityPropa
     X_pca = pca.fit_transform(X_scaled)
     var_exp = pca.explained_variance_ratio_
 
-    #print(f"Variância explicada pelo PCA ({metodo}):")
-    #print(f"PC1: {var_exp[0]:.2%}")
-    #print(f"PC2: {var_exp[1]:.2%}")
-    #print(f"Total (2D): {var_exp.sum():.2%}\n")
-
     # Features mais importantes
     components = pca.components_
     important_features = {}
@@ -136,7 +130,7 @@ def plot_clusters_pca(X_scaled, df_clusters, estado_index, metodo='AffinityPropa
         top_features = [feature_names[idx] for idx in top_indices]
         important_features[pc] = top_features
 
-    # DataFrame para plotagem
+    # DataFrame para plot
     df_plot = pd.DataFrame({
         'PC1': X_pca[:, 0],
         'PC2': X_pca[:, 1],
@@ -155,9 +149,11 @@ def plot_clusters_pca(X_scaled, df_clusters, estado_index, metodo='AffinityPropa
         edgecolor='black'
     )
 
-    # Labels das amostras
+    
     for i in range(len(df_plot)):
         plt.text(df_plot['PC1'][i] + 0.2, df_plot['PC2'][i], df_plot['Estado'][i], fontsize=8)
+    
+
 
     # Legendas dos eixos com features
     plt.xlabel(f'PC1 ({var_exp[0]:.1%} var. explicada)')
@@ -171,23 +167,33 @@ def plot_clusters_pca(X_scaled, df_clusters, estado_index, metodo='AffinityPropa
     return important_features
 
 
-def plot_heatmap_z_score(df=None, g=None, year_of_dataset='2022'):
-    if not (g is None):
+def plot_heatmap_outliers(df=None, g=None, year_of_dataset='2022'):
+    if g is not None:
         df = df.loc[g, :].copy()
 
-    z_df = (df - df.mean()) / df.std()
+    # Thresholds personalizados
+    upper = 2 * df.mean() + df.std()
+    upper = upper.tolist()
+    lower = -2 * df.mean() - df.std()
+    lower = lower.tolist()
+
+
+    #print('UPPER',upper)
+
+
+    #print('\n\n\n')
+    #print('LOWER',lower)
 
     plt.figure(figsize=(16, 10))
-    ax = sns.heatmap(z_df, center=0, annot=True, linewidth=.5, cmap="vlag")
+    ax = sns.heatmap(df, annot=True, linewidth=.5, cmap="vlag")
 
     ax.set(
-        xlabel="Z-Score da Proporção de Óbitos por faixa de idade",
+        xlabel="Proporção de Óbitos por faixa de idade",
         ylabel="Estado"
     )
     ax.xaxis.tick_top()
     ax.tick_params(top=True, bottom=False)
 
-    
     outliers_positive = set()
     outliers_negative = set()
     outlier_counts = {
@@ -195,31 +201,38 @@ def plot_heatmap_z_score(df=None, g=None, year_of_dataset='2022'):
         'outliers_negativos': []
     }
 
-    
-    for col in z_df.columns:
-        col_vals = z_df[col]
-        count_pos = (col_vals > 2).sum()
-        count_neg = (col_vals < -2).sum()
+    # Contagem e marcação de outliers
+    for j in range(len(df.columns)):
+        #print("AQUI PEDRO", df.iloc[:, j])
+        col_vals = df.iloc[:, j]
+        count_pos = (col_vals > upper[j]).sum()
+        count_neg = (col_vals < lower[j]).sum()
         outlier_counts['outliers_positivos'].append(count_pos)
         outlier_counts['outliers_negativos'].append(count_neg)
 
-    # Heatmap e detecção
-    for i in range(z_df.shape[0]):  # linhas (estados)
-        for j in range(z_df.shape[1]):  # colunas (faixas de idade)
-            val = z_df.iloc[i, j]
-            if val > 2:
+        #print(df.shape[0])
+        for i in range(df.shape[0]):
+            val = df.iloc[i, j]
+            if val > upper[j]:
                 ax.add_patch(Rectangle((j, i), 1, 1, fill=False, edgecolor='red', lw=2.5))
-                outliers_positive.add(z_df.index[i])
-            elif val < -2:
+                outliers_positive.add(df.index[i])
+            elif val < lower[j]:
                 ax.add_patch(Rectangle((j, i), 1, 1, fill=False, edgecolor='blue', lw=2.5))
-                outliers_negative.add(z_df.index[i])
+                outliers_negative.add(df.index[i])
+    
+    plt.subplots_adjust(bottom=0.15)
+    #plt.tight_layout()
 
-    plt.tight_layout()
-    plt.savefig(os.path.join(RESULTS + year_of_dataset, 'heatmap_z_score.pdf'), format='pdf')
+    plt.figtext(
+        0.5, 0.02,
+        "A ordem das colunas segue a ordem especificada no arquivo 'principais_causas_de_mortalidade.txt'.",
+        wrap=True, horizontalalignment='right', fontsize=10
+    )
+    os.makedirs(os.path.join(RESULTS + year_of_dataset), exist_ok=True)
+    plt.savefig(os.path.join(RESULTS + year_of_dataset, 'heatmap_outliers.pdf'), format='pdf')
     plt.close()
 
-    # Construir DataFrame com contagem de outliers por coluna
-    outlier_counts_df = pd.DataFrame(outlier_counts, index=z_df.columns)
+    outlier_counts_df = pd.DataFrame(outlier_counts, index=df.columns)
 
     return {
         'outliers_positivos': sorted(outliers_positive),
@@ -227,34 +240,13 @@ def plot_heatmap_z_score(df=None, g=None, year_of_dataset='2022'):
     }, outlier_counts_df
 
 
-def save_unique_figure(save_dir, filename_base, ext="pdf"):
+def regression(X=None, X_label=None, y=None, y_label=None, year_of_dataset='2022'):
     """
-    Salva figura com nome único
-    """
-    i = 0
-    while True:
-        if i == 0:
-            filename = f"{filename_base}_regression.{ext}"
-        else:
-            filename = f"{filename_base}_regression_{i}.{ext}"
-        full_path = os.path.join(save_dir, filename)
-        if not os.path.exists(full_path):
-            break
-        i += 1
-    plt.savefig(full_path, format=ext)
-    plt.close()
-
-
-def regression(X=None, X_label=None, y=None, y_label=None, remove_top_n=None, remove_bottom_n=None, year_of_dataset='2022'):
-    """
-    Regressão linear simples com opção de remover os `n` maiores e/ou menores valores de y antes do ajuste.
+    Regressão linear simples.
     """
     # Garantir arrays numpy
     X = np.asarray(X)
     y = np.asarray(y)
-
-    if remove_bottom_n == 0: remove_bottom_n = None
-    if remove_top_n == 0: remove_top_n = None
 
     
     if X.ndim == 1:
@@ -265,22 +257,6 @@ def regression(X=None, X_label=None, y=None, y_label=None, remove_top_n=None, re
 
     
     mask = np.ones(len(y), dtype=bool)
-
-    # Remover top n
-    if remove_top_n is not None:
-        if isinstance(remove_top_n, (int, float)) and remove_top_n > 0 and remove_top_n < len(y):
-            top_idx = np.argsort(y)[-int(remove_top_n):]
-            mask[top_idx] = False
-        else:
-            print(f"[WARNING] Valor inválido para remove_top_n: {remove_top_n}")
-
-    # Remover bottom n
-    if remove_bottom_n is not None:
-        if isinstance(remove_bottom_n, (int, float)) and remove_bottom_n > 0 and remove_bottom_n < len(y):
-            bottom_idx = np.argsort(y)[:int(remove_bottom_n)]
-            mask[bottom_idx] = False
-        else:
-            print(f"[WARNING] Valor inválido para remove_bottom_n: {remove_bottom_n}")
 
     # Aplicar máscara
     X = X[mask].copy()
@@ -300,7 +276,7 @@ def regression(X=None, X_label=None, y=None, y_label=None, remove_top_n=None, re
         X_plot = X.ravel()
 
     # Plotagem
-    print(X_plot.shape, y.shape)
+    #print(X_plot.shape, y.shape)
     plt.scatter(X_plot, y, color='blue', label='Data Points')
     plt.plot(X_plot, y_pred, color='red', label='Regression Line')
     plt.xlabel(X_label if X_label else "X")
@@ -344,14 +320,12 @@ def plot_bar_sorted(df, column_name, highlight_states=None,
                     title=None, figsize=(20,10),
                     year_of_dataset='2022'):
     """
-    Plota gráfico de barras ordenado do menor para o maior valor, destacando alguns estados.
-    Pode normalizar os valores pela população passada.
+    Plota gráfico de barras ordenado do menor para o maior valor.
 
     Parâmetros:
     - df (pd.DataFrame): DataFrame com dados, índice sendo os estados.
     - column_name (str): Nome da coluna para valores.
     - highlight_states (list): Lista de estados a destacar (cor diferente).
-    - population (pd.Series or list or np.array): População dos estados na mesma ordem do df.
     - highlight_color (str): Cor dos estados destacados.
     - default_color (str): Cor padrão das barras.
     - title (str): Título do gráfico.
@@ -363,17 +337,10 @@ def plot_bar_sorted(df, column_name, highlight_states=None,
         print(f'WARNING: {column_name} not in df.columns!')
         return
 
-    # Se população foi passada, calcula valor per capita
-    if population is not None:
-        pop_series = population if isinstance(population, pd.Series) else pd.Series(population, index=df.index)
-        df_copy['value_per_capita'] = df_copy[column_name] / pop_series
-        y_col = 'value_per_capita'
-        ylabel = f"{column_name} (proporção da população)"
-        auto_title = f"{column_name} por proporção da população"
-    else:
-        y_col = column_name
-        ylabel = column_name
-        auto_title = f"{column_name} (valores absolutos)"
+    
+    y_col = column_name
+    ylabel = column_name
+    auto_title = f"{column_name} (valores absolutos)"
 
     # Ordenar pelo valor que será plotado (proporcional ou absoluto)
     df_sorted = df_copy.sort_values(by=y_col)
