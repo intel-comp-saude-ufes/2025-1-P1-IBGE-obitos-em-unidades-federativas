@@ -171,11 +171,12 @@ def plot_heatmap_outliers(df=None, g=None, year_of_dataset='2022'):
     if g is not None:
         df = df.loc[g, :].copy()
 
-    # Thresholds personalizados
-    upper = 2 * df.mean() + df.std()
-    upper = upper.tolist()
-    lower = -2 * df.mean() - df.std()
-    lower = lower.tolist()
+    # Método IQR
+    Q1 = df.quantile(0.25)
+    Q3 = df.quantile(0.75)
+    IQR = Q3 - Q1
+    upper = (Q3 + 1.5 * IQR).tolist()
+    lower = (Q1 - 1.5 * IQR).clip(lower=0).tolist()  # evita limites negativos
 
 
     #print('UPPER',upper)
