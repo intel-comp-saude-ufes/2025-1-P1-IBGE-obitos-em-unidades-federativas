@@ -31,14 +31,6 @@ Este projeto é estruturado para:
 2. Executar **modelos e análises estatísticas** com scripts organizados.
 3. Produzir e armazenar **gráficos e resultados prontos para o artigo**.
 
-## Arquivos principais
-❗ **Atenção:** Necessário essa subsubseção??
-- `README.md`: Documentação do projeto.
-- `app.py`: Script principal da aplicação.
-- `main.py`: Script principal complementar ou centralizador dos experimentos.
-- Arquivos `.csv` com resultados prontos (2019-2023).
-- `populacaoGrupoDeIdade2022.csv`: Dados populacionais por faixa etária.
-
 ## Diretórios
 
 ### `data/`
@@ -71,10 +63,9 @@ Resultados intermediários e finais das análises, agrupados por faixas de dados
 Para reproduzir os resultados apresentados neste código, é necessário ter o **Python** instalado em seu sistema, bem como o **pip** — o gerenciador de pacotes do Python. Além disso, você deve ter o código disponível localmente na sua máquina. O código do repositório pode ser obtido de duas formas principais:
 
 ### 🔧 Opção 1: Clonar via Git
-❗ **Atenção:** corrigir link do clone https
 ```bash
-git clone https://github.com/usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+git clone https://github.com/intel-comp-saude-ufes/2025-1-P1-IBGE-obitos-em-unidades-federativas.git
+cd 2025-1-P1-IBGE-obitos-em-unidades-federativas
 ```
 
 ### 📄 Opção 2: Baixar ZIP
@@ -99,14 +90,13 @@ python3 main.py
 
 ---
 # Licença
-Este projeto está licenciado sob os termos da [Licença MIT](https://pt.wikipedia.org/wiki/Licen%C3%A7a_MIT).
-❗ **Atenção:* Corrigir link para o arquivo
+Este projeto está licenciado sob os termos da [Licença MIT](./LICENSE).
 
 ---
 # Contato
 | Autor                 | GitHub               | E-mail               |
 | :---------------- | :------: | ----: |
-| Pedro Igor Gomes de Morais | [@Pedro2um](https://github.com/Pedro2um) | email-pessoal ❗ **Atenção:** |
-| Matheus Saick De Martin | [@saick123](https://github.com/saick123) | email-pessoal ❗ **Atenção:** |
+| Pedro Igor Gomes de Morais | [@Pedro2um](https://github.com/Pedro2um) | pedro.i.morais@edu.ufes.br |
+| Matheus Saick De Martin | [@saick123](https://github.com/saick123) | matheus.martin@edu.ufes.br |
 | Renzo Henrique Guzzo Leão | [@Renzo-Henrique](https://github.com/seuusuario) | renzolealguzzo@gmail.com |
 
