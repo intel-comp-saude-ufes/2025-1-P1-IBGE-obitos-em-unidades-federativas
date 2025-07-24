@@ -97,7 +97,7 @@ Este projeto está licenciado sob os termos da [Licença MIT](./LICENSE).
 # Contato
 | Autor                 | GitHub               | E-mail               |
 | :---------------- | :------: | ----: |
-| Pedro Igor Gomes de Morais | [@Pedro2um](https://github.com/Pedro2um) | pedro.i.morais@edu.ufes.br |
+| Pedro Igor Gomes de Morais | [@Pedro2um](https://github.com/Pedro2um) | pedroigorgm@gmail.com |
 | Matheus Saick De Martin | [@saick123](https://github.com/saick123) | matheus.martin@edu.ufes.br |
 | Renzo Henrique Guzzo Leão | [@Renzo-Henrique](https://github.com/seuusuario) | renzolealguzzo@gmail.com |
 
