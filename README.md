@@ -13,7 +13,7 @@ Este repositório contém todo o código, dados e resultados referentes ao estud
 
 - Documentação detalhada para reproduzir os experimentos e entender o fluxo do projeto.
 
-- Link para o [artigo científico](./2025-1-P1-IBGE-obitos-em-unidades-federativas.pdf) referente à pesquisa que gerou o repositório e link para o resumo explicativo do artigo em [vídeo](https://youtu.be/9gbirT5KC_A).
+- Link para o [artigo científico](./2025_1_P1_IBGE_obitos_em_unidades_federativas.pdf) referente à pesquisa que gerou o repositório e link para o resumo explicativo do artigo em [vídeo](https://youtu.be/9gbirT5KC_A).
 
 Este material foi desenvolvido para facilitar a reprodução dos experimentos e servir de base para futuras pesquisas em análise de dados em saúde pública.
 
