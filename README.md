@@ -59,7 +59,7 @@ Resultados intermediários e finais das análises, agrupados por faixas de dados
 
 # Como usar
 
-Para reproduzir os resultados apresentados neste código, é necessário ter o **Python** instalado em seu sistema, bem como o **pip** — o gerenciador de pacotes do Python. Além disso, você deve ter o código disponível localmente na sua máquina. O código do repositório pode ser obtido de duas formas principais:
+Para reproduzir os resultados apresentados neste código, é necessário ter o **Python** instalado em seu sistema, bem como o **pip** — o gerenciador de pacotes do Python. Também é recomendável utilizar um ambiente virtual (venv) para garantir o isolamento das dependências do projeto. Além disso, você deve ter o código disponível localmente na sua máquina. O código do repositório pode ser obtido de duas formas principais:
 
 ### 🔧 Opção 1: Clonar via Git
 ```bash
@@ -79,6 +79,8 @@ A seguir, apresentamos as instruções recomendadas para reproduzir os experimen
 
 1. Instalar dependências do projeto:
 ```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 2. Executar o projeto:
